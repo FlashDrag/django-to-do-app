@@ -63,7 +63,8 @@
         $ livereload
         ```
 
-- Create a Django app:
+5. Create a Django app:
+_Allows Django to recognize the app and look for a template folder in the app_
     ```
     $ python manage.py startapp <name of app>
     ```
@@ -74,9 +75,8 @@
             '<name of app>',
         ]
         ```
-
-        Allows Django to recognize the app and look for a template folder in the app.
     - Add the app to the `urls.py` file of the project:
+    _This will allow the app to have its own `urls.py` file and registers any URLs defined there. And the app's `urls.py` file will be used to define the all routes for the certain app_
         ```
         from django.urls import path, include
 
@@ -85,8 +85,6 @@
             path('', include('<name of app>.urls')),
         ]
         ```
-
-        This will allow the app to have its own `urls.py` file and registers any URLs defined there. And the app's `urls.py` file will be used to define the all routes for the certain app.
     - Create a `urls.py` file in the app:
         ```
         from django.urls import path
@@ -96,3 +94,27 @@
             path('url_path/', views.<name of view function>, name='<name of view function>'),
         ]
         ```
+6. Create a Django superuser:
+_Allows you to access the admin UI panel and manage the database_
+    ```
+    $ python manage.py createsuperuser
+    ```
+
+- ### Database Setup
+#### Migrations
+1. Make migrations:
+The `makemigrations` command looks at the models you have defined in your apps and creates a set of migration files for those changes.
+    ```
+    $ python manage.py makemigrations
+    ```
+2. Migrate:
+The `migrate` command takes all of the migration files and runs them against your database - synchronizing the changes you made to your models with the schema in the database.
+    ```
+    $ python manage.py migrate
+    ```
+
+- Show migrations:
+The `showmigrations` command shows all migrations that have been applied or unapplied.
+    ```
+    $ python manage.py showmigrations
+    ```
