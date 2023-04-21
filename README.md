@@ -1,8 +1,7 @@
 # TO DO
+Mini project to practice Django CRUD operations
 
-
-## Technologies Used
-...
+_no styled_
 
 ## Project Setup
 - ### Virtual Environment
@@ -118,3 +117,6 @@ The `showmigrations` command shows all migrations that have been applied or unap
     ```
     $ python manage.py showmigrations
     ```
+
+## Credits
+The webapp build based on the [Code institute](https://codeinstitute.net/) walkthrough project.
