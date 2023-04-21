@@ -15,7 +15,11 @@
     </tr>
     {% for item in items %}
       <tr>
-        <td>{% if item.done %}&#9745;{% else %}&#9634;{% endif %}</td>
+        <td>
+          <a href="/toogle/{{ item.id }}" style="text-decoration: none;">
+            {% if item.done %}&#9745;{% else %}&#9634;{% endif %}
+          </a>
+        </td>
         <td>{{ item }}</td>
         <td>
           <a href="/toogle/{{ item.id }}">
