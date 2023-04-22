@@ -1,0 +1,49 @@
+{% extends 'todo/base.html' %}
+{% block content %}
+
+<div class="container h-100">
+  <div class="row py-5 d-flex justify-content-center align-items-center h-100">
+    <div class="col col-xl-10">
+      <div class="card">
+        <div class="card-body p-5">
+          <h4 class="card-title">
+            Todo list
+          </h4>
+
+          <!-- Add Item Form -->
+          <form method="post">
+            <div class="d-flex justify-content-center align-items-center mb-4">
+              <div class="flex-fill mr-1">
+                {% csrf_token %}
+                {{ form.name }}
+              </div>
+              <button type="submit" class="add btn btn-primary font-weight-bold todo-list-add-btn">
+                Add
+              </button>
+            </div>
+          </form>
+
+          <!-- List of Items -->
+          <div class="list-wrapper">
+            <ul class="d-flex flex-column-reverse todo-list">
+              {% for item in items %}
+                <li data-item_id='{{ item.id }}' data-item_done="{{ item.done }}">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="checkbox" type="checkbox">
+                      {{ item.name }}
+                      <i class="input-helper"></i>
+                    </label>
+                  </div>
+                  <a href="/delete/{{ item.id }}" class="remove mdi mdi-close-circle-outline"></a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

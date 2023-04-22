@@ -1,7 +1,7 @@
 # TO DO
 Mini project to practice Django CRUD operations
 
-_no styled_
+_The Style based on [Bootstrap](https://bbbootstrap.com/snippets/awesome-todo-list-template-25095891) template_
 
 ## Project Setup
 - ### Virtual Environment
@@ -119,4 +119,4 @@ The `showmigrations` command shows all migrations that have been applied or unap
     ```
 
 ## Credits
-The webapp build based on the [Code institute](https://codeinstitute.net/) walkthrough project.
+Personal edition of the TODO webapp from the [Code institute](https://codeinstitute.net/) walkthrough project.
