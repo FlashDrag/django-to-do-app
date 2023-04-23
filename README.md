@@ -1,6 +1,8 @@
 # TO DO
 Mini project to practice Django CRUD operations
 
+Live Demo: https://to-do-app-django.herokuapp.com/
+
 _Styled with Bootstrap 4.6.2_
 
 ## Features
@@ -220,6 +222,8 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
             "whitenoise.middleware.WhiteNoiseMiddleware",
             # ...
         ]
+        # ...
+        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
         ```
 - Create requirements file:
     ```
