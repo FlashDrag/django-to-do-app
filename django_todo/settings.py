@@ -137,10 +137,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Location of static files
+# Location of static files during development
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+# Location of static files on Heroku (or other production environments)
+# When you deploy your application to Heroku or another production environment,
+# the collectstatic command will collect all static files from your project
+# and its apps and place them in the staticfiles directory,
+#  as specified by STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
