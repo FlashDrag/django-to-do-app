@@ -226,6 +226,10 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
     ```
     $ heroku config:set <name of variable>=<value of variable>
     ```
+- Add the Heroku app URL to the ALLOWED_HOSTS list in `settings.py`:
+    ```
+    ALLOWED_HOSTS = ['<name of app>.herokuapp.com']
+    ```
 - Commit and push the code to Heroku:
     ```
     $ git add .
