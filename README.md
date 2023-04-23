@@ -57,8 +57,30 @@ _Styled with Bootstrap 4.6.2_
         import os
         SECRET_KEY = os.getenv('SECRET_KEY')
         ```
+    - Update the DATABASES setting in `settings.py`:
 
-2. Create a Django project:
+    **# install `dj-database-url`: `pip install dj_database_url`**
+
+        ```
+        if DEBUG:
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                }
+            }
+        else:
+            import dj_database_url
+
+            if DEBUG:
+                # --//--
+            else:
+                DATABASES = {
+                'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+                }
+        ```
+
+3. Create a Django project:
     ```
     $ django-admin startproject <name of project> .
     ```
@@ -113,7 +135,7 @@ _Allows you to access the admin UI panel and manage the database_
     ```
 
 - ### Database Setup
-#### Migrations
+#### Django Local Migrations
 1. Make migrations:
 The `makemigrations` command looks at the models you have defined in your apps and creates a set of migration files for those changes.
     ```
@@ -165,6 +187,56 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
     ```
 
     _Open the `htmlcov/index.html` file in the browser_
+
+## Deployment
+### Heroku CLI
+- Install psycopg2 database adapter to use PostgreSQL with Django:
+    ```
+    $ pip install psycopg2-binary
+    ```
+
+    _Note: psycopg2-binary is a package that contains pre-built binaries of psycopg2. It is easier to install and requires fewer dependencies than psycopg2_
+
+- Install gunicorn to replace the Django development server:
+    ```
+    $ pip install gunicorn
+    ```
+- Create requirements file:
+    ```
+    $ pip freeze > requirements.txt
+    ```
+- Create a Heroku Procfile:
+    ```
+    $ touch Procfile
+    ```
+- Add the following to the Procfile:
+    ```
+    web: gunicorn <name of project>.wsgi:application
+    # e.g: `web: gunicorn django_todo.wsgi:application`
+    ```
+- Login to Heroku:
+    ```
+    $ heroku login
+    ```
+- Create a Heroku app:
+    ```
+    $ heroku create <name of app> --region eu
+    ```
+- Set the environment variables in Heroku:
+    ```
+    $ heroku config:set <name of variable>=<value of variable>
+    ```
+- Commit and push the code to Heroku:
+    ```
+    $ git add .
+    $ git commit -m "Setup Heroku files for deployment"
+    $ git push heroku master
+    ```
+- Run the migrations on Heroku:
+    ```
+    $ heroku run python manage.py migrate
+    ```
+
 
 ## Credits
 Personal edition of the TODO webapp from the [Code institute](https://codeinstitute.net/) walkthrough project.
