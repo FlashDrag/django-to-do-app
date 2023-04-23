@@ -3,7 +3,7 @@ const todoListItems = $(".todo-list li");
 
 todoListItems.each(function(index) {
     if ($(this).data('item_done') === 'True') {
-        $(this).addClass('completed');
+        $(this).find('.form-check-label').addClass('completed');
         $(this).find('input[type="checkbox"]').prop('checked', true);
     }
 });
