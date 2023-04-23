@@ -62,7 +62,7 @@ _Styled with Bootstrap 4.6.2_
     **# install `dj-database-url`: `pip install dj_database_url`**
 
         ```
-        if DEBUG:
+        if DEBUG == 'True':
             DATABASES = {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
@@ -190,6 +190,9 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
 
 ## Deployment
 ### Heroku CLI
+
+[Django-Heroku settings.py example](https://github.com/heroku/python-getting-started/blob/main/gettingstarted/settings.py)
+
 - Install psycopg2 database adapter to use PostgreSQL with Django:
     ```
     $ pip install psycopg2-binary
@@ -201,6 +204,23 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
     ```
     $ pip install gunicorn
     ```
+- Configure `staticfiles`:
+    - Add the following to the `settings.py` file:
+        ```
+        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+        ```
+    - Install [WhiteNoise](https://whitenoise.readthedocs.io/en/stable/django.html) to serve static files:
+        ```
+        $ pip install whitenoise
+        ```
+    - Add the following to the `settings.py` file:
+        ```
+        MIDDLEWARE = [
+            # ...
+            "whitenoise.middleware.WhiteNoiseMiddleware",
+            # ...
+        ]
+        ```
 - Create requirements file:
     ```
     $ pip freeze > requirements.txt
