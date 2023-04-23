@@ -131,5 +131,42 @@ The `showmigrations` command shows all migrations that have been applied or unap
     $ python manage.py showmigrations
     ```
 
+## Testing
+### Unit Testing
+The app tested with the `unittest` Django module.
+
+- To run the tests:
+    ```
+    $ python manage.py test
+    ```
+- To run the tests from a specific app:
+    ```
+    $ python manage.py test <name of app>
+    ```
+- To run the tests from a specific file:
+    ```
+    $ python manage.py test <name of app>.test_<name of file>
+    ```
+### Coverage
+Coverage is a tool that allows you to measure the percentage of code that is covered by your tests.
+
+- Install `coverage`:
+    ```
+    $ pip install coverage
+    ```
+- To run the tests with coverage:
+    ```
+    $ coverage run --source=<name of app> manage.py test
+    $ coverage report
+    ```
+- View the coverage report in the browser:
+    ```
+    $ coverage html
+    ```
+
+    _Open the `htmlcov/index.html` file in the browser_
+
 ## Credits
 Personal edition of the TODO webapp from the [Code institute](https://codeinstitute.net/) walkthrough project.
+
+Favicon taken from [icons8](https://icons8.com/)

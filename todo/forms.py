@@ -5,7 +5,7 @@ from .models import Item
 class AddItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['name']
+        fields = ['name', 'done']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control todo-list-input',
@@ -17,7 +17,7 @@ class AddItemForm(forms.ModelForm):
 class EditItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['name']
+        fields = ['name', 'done']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control todo-list-input',
@@ -28,4 +28,3 @@ class EditItemForm(forms.ModelForm):
         super(EditItemForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields['name'].widget.attrs['value'] = self.instance.name
-            self.fields['name'].initial = ''
