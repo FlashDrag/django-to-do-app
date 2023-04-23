@@ -1,12 +1,25 @@
 # TO DO
 Mini project to practice Django CRUD operations
 
-_The Style based on [Bootstrap](https://bbbootstrap.com/snippets/awesome-todo-list-template-25095891) template_
+_Styled with Bootstrap 4.6.2_
+
+## Features
+- [x] Create a new task
+- [x] Edit a task
+- [x] Delete a task
+- [x] Mark a task as done
+- [x] Unmark a task
+
+## Technologies Used
+- [Django 3.2.18](https://www.djangoproject.com/)
+- [Bootstrap 4.6.2](https://getbootstrap.com/docs/4.6/getting-started)
+- [jQuery 3.5.1](https://jquery.com/)
+- [Font Awesome](https://fontawesome.com/)
 
 ## Project Setup
 - ### Virtual Environment
 #### Set Up Virtualenv with Virtualenvwrapper on Ubuntu 22.04
-1. **Create a virtual environment** (flag `-a` means to associate the virtual       environment with a project):
+1. **Create a virtual environment** (flag `-a` means to associate the virtual environment with a project):
     ```
     $ cd <path to project>
     $ mkvirtualenv -a <path to project> <name of virtual environment>
