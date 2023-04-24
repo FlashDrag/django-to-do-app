@@ -67,7 +67,10 @@ _Styled with Bootstrap 4.6.2_
         - **Install dj-database-url: `pip install dj_database_url`**
 
         ```
-        if DEBUG == 'True':
+        development = os.getenv('DEVELOPMENT', False)
+        DEBUG = development
+        
+        if development:
             DATABASES = {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
