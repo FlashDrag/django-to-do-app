@@ -18,8 +18,8 @@ class TestViews(TestCase):
 
     def test_can_toggle_item(self):
         item = Item.objects.create(name='Test Todo Item', done=True)
-        respose = self.client.post(f'/toggle/{item.id}')
-        self.assertEqual(respose.url, '/')
+        response = self.client.post(f'/toggle/{item.id}')
+        self.assertEqual(response.url, '/')
         updated_item = Item.objects.get(id=item.id)
         self.assertFalse(updated_item.done)
 
@@ -45,3 +45,23 @@ class TestViews(TestCase):
         self.assertRedirects(response, '/')
         updated_item = Item.objects.get(id=item.id)
         self.assertEqual(updated_item.name, 'Updated Name')
+
+    def test_is_max_items_reached(self):
+        '''
+        Test that the maximum number of creating items is 5
+        and that a warning message is displayed
+        '''
+        # create 5 items
+        for i in range(5):
+            Item.objects.create(name=f'Item {i}')
+
+        # make a HTTP POST request to the homepage to create a new item
+        response = self.client.post('/', {'name': 'Test Todo Item'})
+        self.assertEqual(response.url, '/')
+
+        # check that the expected template was used
+        messages = list(response.wsgi_request._messages)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]),
+                         'You have reached the maximum limit of 5 items! '
+                         'Please delete some tasks before adding new ones.')

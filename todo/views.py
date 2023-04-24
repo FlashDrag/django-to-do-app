@@ -13,9 +13,9 @@ def get_todo_list(request):
         # Check if the user has reached the maximum number of items
         # If so, redirect to the todo list and display a warning message
         if items_count >= MAX_ITEMS:
-            messages.warning(request, f'You have reached the maximum limit \
-                           of {MAX_ITEMS} items! Please delete \
-                           some tasks before adding new ones.')
+            messages.warning(request, 'You have reached the maximum limit '
+                             f'of {MAX_ITEMS} items! Please delete '
+                             'some tasks before adding new ones.')
             return redirect('get_todo_list')
         else:
             form = AddItemForm(request.POST)
