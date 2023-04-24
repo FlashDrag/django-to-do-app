@@ -21,11 +21,14 @@ _Styled with Bootstrap 4.6.2_
 ## Project Setup
 - ### Virtual Environment
 #### Set Up Virtualenv with Virtualenvwrapper on Ubuntu 22.04
-1. **Create a virtual environment** (flag `-a` means to associate the virtual environment with a project):
+1. Create a virtual environment:
     ```
     $ cd <path to project>
     $ mkvirtualenv -a <path to project> <name of virtual environment>
     ```
+
+    (flag `-a` means to associate the virtual environment with a project)
+
 2. Activate the virtual environment:
     ```
     $ workon <name of virtual environment>
@@ -61,25 +64,24 @@ _Styled with Bootstrap 4.6.2_
         ```
     - Update the DATABASES setting in `settings.py`:
 
-    **# install `dj-database-url`: `pip install dj_database_url`**
+        - **Install dj-database-url: `pip install dj_database_url`**
 
         ```
         if DEBUG == 'True':
             DATABASES = {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
-                    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                    'NAME': BASE_DIR / 'db.sqlite3',
                 }
             }
         else:
+            # Parse database configuration from $DATABASE_URL
             import dj_database_url
-
-            if DEBUG:
-                # --//--
-            else:
-                DATABASES = {
-                'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-                }
+            DATABASES = {
+                'default': dj_database_url.config(
+                    default=os.getenv('DATABASE_URL')
+                )
+            }
         ```
 
 3. Create a Django project:
@@ -100,19 +102,26 @@ _Styled with Bootstrap 4.6.2_
         ```
 
 5. Create a Django app:
-_Allows Django to recognize the app and look for a template folder in the app_
+
+    _Allows Django to recognize the app and look for a template folder in the app_
+
     ```
     $ python manage.py startapp <name of app>
     ```
+
     - Add the app to the `INSTALLED_APPS` list in `settings.py`:
+
         ```
         INSTALLED_APPS = [
             ...
             '<name of app>',
         ]
         ```
+
     - Add the app to the `urls.py` file of the project:
+
     _This will allow the app to have its own `urls.py` file and registers any URLs defined there. And the app's `urls.py` file will be used to define the all routes for the certain app_
+
         ```
         from django.urls import path, include
 
@@ -121,7 +130,9 @@ _Allows Django to recognize the app and look for a template folder in the app_
             path('', include('<name of app>.urls')),
         ]
         ```
+
     - Create a `urls.py` file in the app:
+
         ```
         from django.urls import path
         from . import views
@@ -130,8 +141,11 @@ _Allows Django to recognize the app and look for a template folder in the app_
             path('url_path/', views.<name of view function>, name='<name of view function>'),
         ]
         ```
+
 6. Create a Django superuser:
+
 _Allows you to access the admin UI panel and manage the database_
+
     ```
     $ python manage.py createsuperuser
     ```
@@ -139,18 +153,25 @@ _Allows you to access the admin UI panel and manage the database_
 - ### Database Setup
 #### Django Local Migrations
 1. Make migrations:
+
 The `makemigrations` command looks at the models you have defined in your apps and creates a set of migration files for those changes.
+
     ```
     $ python manage.py makemigrations
     ```
+
 2. Migrate:
+
 The `migrate` command takes all of the migration files and runs them against your database - synchronizing the changes you made to your models with the schema in the database.
+
     ```
     $ python manage.py migrate
     ```
 
 - Show migrations:
+
 The `showmigrations` command shows all migrations that have been applied or unapplied.
+
     ```
     $ python manage.py showmigrations
     ```
