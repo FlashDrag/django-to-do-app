@@ -137,9 +137,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Location of static files during development
+# Location of static files of project apps
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "todo/static"),
 ]
 
 # Location of static files on Heroku (or other production environments)

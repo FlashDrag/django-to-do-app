@@ -246,6 +246,15 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
         # ...
         STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
         ```
+    - Run the `collectstatic` command to gather (collect) all static files of your apps from `STATICFILES_DIRS` into the centralized `STATIC_ROOT` directory `staticfiles`:
+        ```
+        $ python manage.py collectstatic
+        ```
+    - Since the collectstatic command will be run on the Heroku server during the build process, there is no need to include the collected static files in your repository.
+
+        ```
+        echo "staticfiles/" >> .gitignore
+        ```
 - Create requirements file:
     ```
     $ pip freeze > requirements.txt
