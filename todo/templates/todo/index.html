@@ -10,6 +10,17 @@
             Todo list
           </h4>
 
+          <!-- Messages -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+
           <!-- Add/Edit Item Form -->
           <form method="post" autocomplete="off">
             <div class="row mb-4">

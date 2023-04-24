@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['to-do-app-django.herokuapp.com']
+ALLOWED_HOSTS = ['to-do-app-django.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -156,3 +156,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# This setting defines the default storage backend to use
+# for storing messages. The default is django.contrib.messages.storage.session.
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"

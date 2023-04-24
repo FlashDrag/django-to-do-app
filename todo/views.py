@@ -1,16 +1,29 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib import messages
+
 from .models import Item
 from .forms import AddItemForm, EditItemForm
 
 
 def get_todo_list(request):
+    MAX_ITEMS = 5
+    items_count = Item.objects.count()
+
     if request.method == 'POST':
-        form = AddItemForm(request.POST)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.done = False
-            item.save()
+        # Check if the user has reached the maximum number of items
+        # If so, redirect to the todo list and display a warning message
+        if items_count >= MAX_ITEMS:
+            messages.warning(request, f'You have reached the maximum limit \
+                           of {MAX_ITEMS} items! Please delete \
+                           some tasks before adding new ones.')
             return redirect('get_todo_list')
+        else:
+            form = AddItemForm(request.POST)
+            if form.is_valid():
+                item = form.save(commit=False)
+                item.done = False
+                item.save()
+                return redirect('get_todo_list')
     else:
         form = AddItemForm()
         # Query the database for all items of the Item model
