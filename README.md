@@ -17,6 +17,7 @@ _Styled with Bootstrap 4.6.2_
 - [Bootstrap 4.6.2](https://getbootstrap.com/docs/4.6/getting-started)
 - [jQuery 3.5.1](https://jquery.com/)
 - [Font Awesome](https://fontawesome.com/)
+- [Cloudinary](https://cloudinary.com/)
 
 ## Project Setup
 - ### Virtual Environment
@@ -69,7 +70,7 @@ _Styled with Bootstrap 4.6.2_
         ```
         development = os.getenv('DEVELOPMENT', False)
         DEBUG = development
-        
+
         if development:
             DATABASES = {
                 'default': {
@@ -215,6 +216,72 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
     _Open the `htmlcov/index.html` file in the browser_
 
 ## Deployment
+### Hosting static files - Cloudinary Setup
+    Hosting static files on Heroku is not recommended for production apps. Instead, use a cloud storage service like Amazon S3, Cloudinary, Azure Blob etc. The version of the app with hosted static on the same Heroku server as the app you can find on the `local-static` branch.
+
+    - Add the following to the `settings.py` file:
+        ```
+        # Cloudinary settings
+        INSTALLED_APPS = [
+            # ...
+            'cloudinary_storage',  # Must be above `django.contrib.staticfiles`, to override default static storage
+            'django.contrib.staticfiles',
+            'cloudinary',
+            # ...
+        ]
+
+        # STATIC FILES(CSS, JS, IMAGES)
+        # Credentials for the cloudinary_storage. Can be found in the Cloudinary dashboard
+        CLOUDINARY_STORAGE = {
+            'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
+        }
+        # OR
+        CLOUDINARY_STORAGE = {
+            'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+            'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+            'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+        }
+
+        # URL path for your static files.
+        # This is the URL path where your static files will be served from.
+        # Example path for cloudinary css file: `https://res.cloudinary.com/<cloud_name>/raw/upload/v1/static/django_todo/css/style.css`
+        STATIC_URL = '/static/django_todo/'
+        # Dir where your static files are stored locally during development
+        STATICFILES_DIRS = [os.path.join(BASE_DIR, "todo/static"), ]
+        # Dir where static files are stored during production, after running collectstatic
+        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+        # Cloudinary's storage for static files with hashed names
+        STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+
+        # URL path for media files
+        MEDIA_URL = '/media/django_todo/'
+        # Media cloudinary storage
+        DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+        ```
+    - Create a `media` and `static` and in the root directory of the project or in the app directories. The `media` folder will     contain all media files uploaded by users, and the `static` folder will contain all static files such as CSS, JS, and images.
+    
+    - Add to a `base.html` file in the `templates` folder the following:
+        ```
+        {% load static %}
+        ```
+
+    - Deploy the app on HEROKU or run the following command to collect static files if the command didn't run automatically:
+
+        ```
+        $ python manage.py collectstatic
+        ```
+
+    Usually the `$ python manage.py collectstatic` command runs automatically when deploying on HEROKU.
+
+    If you don't use static files, you can prevent this command from running automatically during deployment on Heroku, by setting `DISABLE_COLLECTSTATIC` to `1` in the Heroku config vars. If you already run this command manually, you don't have to disable it on HEROKU, as it won't upload the files again if they didn't change.
+        ```
+        $ heroku config:set DISABLE_COLLECTSTATIC=1
+        ```
+
+    **Notes:**
+    - In production, you must set `DEBUG` to `False` to fetch static files from Cloudinary. With `DEBUG` equal to `True`, Django `staticfiles` app will use your local files for easier and faster development (unless you use `cloudinary_static` template tag).
+
 ### Heroku CLI
 
 [Django-Heroku settings.py example](https://github.com/heroku/python-getting-started/blob/main/gettingstarted/settings.py)
@@ -229,38 +296,6 @@ Coverage is a tool that allows you to measure the percentage of code that is cov
 - Install gunicorn to replace the Django development server:
     ```
     $ pip install gunicorn
-    ```
-- Configure `staticfiles`:
-    - Add the following to the `settings.py` file:
-        ```
-        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-        ```
-    - Install [WhiteNoise](https://whitenoise.readthedocs.io/en/stable/django.html) to serve static files:
-        ```
-        $ pip install whitenoise
-        ```
-    - Add the following to the `settings.py` file:
-        ```
-        MIDDLEWARE = [
-            # ...
-            "whitenoise.middleware.WhiteNoiseMiddleware",
-            # ...
-        ]
-        # ...
-        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-        ```
-    - Run the `collectstatic` command to gather (collect) all static files of your apps from `STATICFILES_DIRS` into the centralized `STATIC_ROOT` directory `staticfiles`:
-        ```
-        $ python manage.py collectstatic
-        ```
-    - Since the collectstatic command will be run on the Heroku server during the build process, there is no need to include the collected static files in your repository.
-
-        ```
-        echo "staticfiles/" >> .gitignore
-        ```
-- Create requirements file:
-    ```
-    $ pip freeze > requirements.txt
     ```
 - Create a Heroku Procfile:
     ```

@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'todo',
 ]
 
@@ -52,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware"
 ]
 
 ROOT_URLCONF = 'django_todo.urls'
@@ -136,12 +137,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-
+CLOUDINARY_STORAGE = {
+            'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
+        }
+STATIC_URL = '/static/django_todo/'
+STATICFILES_STORAGE = 'cloudinary_storage.storage.'\
+    'StaticHashedCloudinaryStorage'
 # Location of static files of project apps
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "todo/static"),
 ]
+
+MEDIA_URL = '/media/django_blog/'
+# Media cloudinary storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Location of static files on Heroku (or other production environments)
 # When you deploy your application to Heroku or another production environment,
@@ -150,8 +159,6 @@ STATICFILES_DIRS = [
 #  as specified by STATIC_ROOT
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Enable WhiteNoise's GZip compression of static assets.
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
